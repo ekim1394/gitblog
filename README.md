@@ -5,20 +5,26 @@ A git-powered blog where commits ARE the content. No CMS, no database — just g
 ## Quick Start
 
 1. **Fork this repo**
-2. **Configure your site** with a `meta:` commit:
+2. **Enable auto-deployment:**
+   ```bash
+   mv .github/workflows/deploy.yml.disabled .github/workflows/deploy.yml
+   git add .github/workflows/deploy.yml
+   git commit -m "Enable GitHub Actions deployment"
+   ```
+3. **Configure your site** with a `meta:` commit:
    ```
    git commit --allow-empty -m "meta: site config" -m "title: My Blog
    author: Your Name
    description: A blog about things"
    ```
-3. **Write a post** with a `blog:` commit:
+4. **Write a post** with a `blog:` commit:
    ```
    git commit --allow-empty -m "blog: My First Post" -m "This is my first blog post.
 
    You can use **markdown** here — headings, lists, code blocks, images, everything."
    ```
-4. **Enable GitHub Pages** in your repo settings (Settings → Pages → Source: GitHub Actions)
-5. Push to `main` and your site deploys automatically
+5. **Enable GitHub Pages** in your repo settings (Settings → Pages → Source: GitHub Actions)
+6. Push to `main` and your site deploys automatically
 
 ## Commit Types
 
@@ -85,4 +91,6 @@ npm run dev
 
 ## How It Works
 
-The build script reads your git history, filters commits by type prefix, renders markdown to HTML, and outputs a static site to `dist/`. GitHub Actions deploys it automatically on every push.
+The build script reads your git history, filters commits by type prefix, renders markdown to HTML, and outputs a static site to `dist/`.
+
+By default, the GitHub Actions workflow is disabled (`.github/workflows/deploy.yml.disabled`). Enable it by renaming the file to `deploy.yml` — then it will deploy automatically on every push to `main`.
