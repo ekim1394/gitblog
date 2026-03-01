@@ -82,6 +82,23 @@ author: Jane Doe
 description: Thoughts on code"
 ```
 
+## Setup
+
+Run the setup script to add a `git blog` shortcut (alias for `git commit --allow-empty`):
+
+```bash
+./bin/setup.sh
+```
+
+Then write posts with:
+
+```bash
+git blog -m "blog: My Post" -m "Content here"
+git blog -m "embed: Video" -m "https://youtube.com/watch?v=..."
+git blog -m "page: About" -m "About page content"
+git blog -m "meta: site config" -m "title: My Blog"
+```
+
 ## Local Development
 
 ```
