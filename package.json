@@ -1,0 +1,12 @@
+{
+  "name": "gitblog",
+  "version": "1.0.0",
+  "description": "Git-powered blog where commits are the content",
+  "scripts": {
+    "build": "node build.js",
+    "dev": "node build.js && npx serve dist"
+  },
+  "dependencies": {
+    "marked": "^15.0.0"
+  }
+}

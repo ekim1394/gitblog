@@ -1,0 +1,88 @@
+# gitblog
+
+A git-powered blog where commits ARE the content. No CMS, no database — just git.
+
+## Quick Start
+
+1. **Fork this repo**
+2. **Configure your site** with a `meta:` commit:
+   ```
+   git commit --allow-empty -m "meta: site config" -m "title: My Blog
+   author: Your Name
+   description: A blog about things"
+   ```
+3. **Write a post** with a `blog:` commit:
+   ```
+   git commit --allow-empty -m "blog: My First Post" -m "This is my first blog post.
+
+   You can use **markdown** here — headings, lists, code blocks, images, everything."
+   ```
+4. **Enable GitHub Pages** in your repo settings (Settings → Pages → Source: GitHub Actions)
+5. Push to `main` and your site deploys automatically
+
+## Commit Types
+
+| Prefix | Purpose | Example |
+|--------|---------|---------|
+| `blog:` | Blog post | `blog: My First Post` |
+| `embed:` | Post with video/tweet embeds | `embed: Cool Video` |
+| `page:` | Static page (shown in nav) | `page: About` |
+| `meta:` | Site configuration | `meta: site config` |
+
+### Blog Post
+
+```
+git commit --allow-empty -m "blog: Post Title" -m "Markdown content here.
+
+## Subheading
+
+- List items
+- More items
+
+\`\`\`js
+console.log('code blocks work too');
+\`\`\`"
+```
+
+### Embed Post
+
+Put a bare URL on its own line. YouTube, Vimeo, and Twitter/X links are auto-embedded:
+
+```
+git commit --allow-empty -m "embed: Great Talk" -m "Check out this talk:
+
+https://www.youtube.com/watch?v=dQw4w9WgXcQ
+
+It changed how I think about things."
+```
+
+### Static Page
+
+Pages appear in the site navigation:
+
+```
+git commit --allow-empty -m "page: About" -m "# About Me
+
+I write about code and other things."
+```
+
+### Site Config
+
+Key-value pairs in the commit body:
+
+```
+git commit --allow-empty -m "meta: site config" -m "title: My Blog
+author: Jane Doe
+description: Thoughts on code"
+```
+
+## Local Development
+
+```
+npm install
+npm run dev
+```
+
+## How It Works
+
+The build script reads your git history, filters commits by type prefix, renders markdown to HTML, and outputs a static site to `dist/`. GitHub Actions deploys it automatically on every push.
