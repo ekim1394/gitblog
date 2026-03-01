@@ -9,17 +9,18 @@ const { resolve: resolveTheme } = require('./themes');
 
 function getCommits() {
   const sep = '---COMMIT_START---';
-  const format = `${sep}%nHASH:%H%nDATE:%aI%nSUBJECT:%s%nBODY_START%n%b%nBODY_END`;
+  const format = `${sep}%nHASH:%H%nDATE:%aI%nAUTHOR:%an%nSUBJECT:%s%nBODY_START%n%b%nBODY_END`;
   const raw = execSync(`git log --format="${format}" --reverse`, { encoding: 'utf-8' });
 
   return raw.split(sep).filter(Boolean).map(block => {
     const hash = block.match(/HASH:(.+)/)?.[1]?.trim();
     const date = block.match(/DATE:(.+)/)?.[1]?.trim();
+    const author = block.match(/AUTHOR:(.+)/)?.[1]?.trim() || '';
     const subject = block.match(/SUBJECT:(.+)/)?.[1]?.trim();
     const bodyMatch = block.match(/BODY_START\n([\s\S]*?)\nBODY_END/);
     const body = bodyMatch?.[1]?.trim() || '';
     if (!hash || !subject) return null;
-    return { hash, date, subject, body };
+    return { hash, date, author, subject, body };
   }).filter(Boolean);
 }
 

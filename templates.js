@@ -45,8 +45,9 @@ function index(posts, basePath) {
       .replace(/<[^>]+>/g, '')
       .slice(0, 160)
       .trim();
+    const authorHtml = p.author ? `<span class="post-author">${p.author}</span>` : '';
     return `    <li>
-      <span class="post-date">${date}</span>
+      <span class="post-date">${date}${p.author ? ' · ' + p.author : ''}</span>
       <a href="${basePath}/posts/${p.slug}.html">${p.title}</a>
       <p class="excerpt">${excerpt}${excerpt.length >= 160 ? '...' : ''}</p>
     </li>`;
@@ -62,7 +63,7 @@ function post(p, basePath) {
   return `<a href="${basePath}/" class="back-link">&larr; Back</a>
 <article>
   <h1>${p.title}</h1>
-  <div class="post-meta">${date}</div>
+  <div class="post-meta">${date}${p.author ? ' · ' + p.author : ''}</div>
   <div class="content">${p.body}</div>
 </article>`;
 }

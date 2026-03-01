@@ -74,6 +74,10 @@ footer {
   margin-bottom: 0.15rem;
 }
 
+.post-list .post-author {
+  font-style: italic;
+}
+
 .post-list a {
   font-size: 1.2rem;
   font-weight: 600;

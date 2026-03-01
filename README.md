@@ -37,6 +37,8 @@ A git-powered blog where commits ARE the content. No CMS, no database — just g
 
 ### Blog Post
 
+Each post automatically displays the **git commit author name** (`git config user.name`) alongside the date.
+
 ```
 git commit --allow-empty -m "blog: Post Title" -m "Markdown content here.
 
