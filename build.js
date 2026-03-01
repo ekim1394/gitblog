@@ -105,6 +105,8 @@ function processEmbeds(body) {
 function build() {
   console.log('Building site...');
 
+  const basePath = (process.env.BASE_PATH || '').replace(/\/+$/, '');
+
   const commits = getCommits();
   const { meta, blog, embed, page } = categorize(commits);
   const config = buildConfig(meta);
@@ -134,20 +136,20 @@ function build() {
   fs.mkdirSync(postsDir, { recursive: true });
 
   // Write index
-  const indexContent = templates.layout(config, pages, templates.index(allPosts));
+  const indexContent = templates.layout(config, pages, basePath, templates.index(allPosts, basePath));
   fs.writeFileSync(path.join(dist, 'index.html'), indexContent);
   console.log('  dist/index.html');
 
   // Write posts
   for (const p of allPosts) {
-    const html = templates.layout(config, pages, templates.post(p));
+    const html = templates.layout(config, pages, basePath, templates.post(p, basePath));
     fs.writeFileSync(path.join(postsDir, `${p.slug}.html`), html);
     console.log(`  dist/posts/${p.slug}.html`);
   }
 
   // Write pages
   for (const p of pages) {
-    const html = templates.layout(config, pages, templates.page(p));
+    const html = templates.layout(config, pages, basePath, templates.page(p));
     fs.writeFileSync(path.join(dist, `${p.slug}.html`), html);
     console.log(`  dist/${p.slug}.html`);
   }

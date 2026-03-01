@@ -1,5 +1,5 @@
-function layout(config, nav, content) {
-  const pages = nav.map(p => `<a href="/${p.slug}.html">${p.title}</a>`).join('\n      ');
+function layout(config, nav, basePath, content) {
+  const pages = nav.map(p => `<a href="${basePath}/${p.slug}.html">${p.title}</a>`).join('\n      ');
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,14 +7,14 @@ function layout(config, nav, content) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>${config.title || 'gitblog'}</title>
   <meta name="description" content="${config.description || ''}">
-  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="${basePath}/style.css">
 </head>
 <body>
   <div class="container">
     <header>
-      <h1><a href="/">${config.title || 'gitblog'}</a></h1>
+      <h1><a href="${basePath}/">${config.title || 'gitblog'}</a></h1>
       <nav>
-        <a href="/">Home</a>
+        <a href="${basePath}/">Home</a>
         ${pages}
       </nav>
     </header>
@@ -25,7 +25,7 @@ function layout(config, nav, content) {
 </html>`;
 }
 
-function index(posts) {
+function index(posts, basePath) {
   if (posts.length === 0) {
     return `<p>No posts yet. Create a commit with the prefix <code>blog:</code> to get started.</p>`;
   }
@@ -39,7 +39,7 @@ function index(posts) {
       .trim();
     return `    <li>
       <span class="post-date">${date}</span>
-      <a href="/posts/${p.slug}.html">${p.title}</a>
+      <a href="${basePath}/posts/${p.slug}.html">${p.title}</a>
       <p class="excerpt">${excerpt}${excerpt.length >= 160 ? '...' : ''}</p>
     </li>`;
   }).join('\n');
@@ -47,11 +47,11 @@ function index(posts) {
   return `<ul class="post-list">\n${items}\n</ul>`;
 }
 
-function post(p) {
+function post(p, basePath) {
   const date = new Date(p.date).toLocaleDateString('en-US', {
     year: 'numeric', month: 'long', day: 'numeric'
   });
-  return `<a href="/" class="back-link">&larr; Back</a>
+  return `<a href="${basePath}/" class="back-link">&larr; Back</a>
 <article>
   <h1>${p.title}</h1>
   <div class="post-meta">${date}</div>

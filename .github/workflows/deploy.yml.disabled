@@ -30,6 +30,9 @@ jobs:
 
       - run: npm ci
       - run: npm run build
+        # when using github.io pages, set BASE_PATH to /repo-name to ensure assets are correctly linked
+        env:
+          BASE_PATH: /gitblog
 
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
