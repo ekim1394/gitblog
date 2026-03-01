@@ -1,5 +1,8 @@
-function layout(config, nav, basePath, content) {
+function layout(config, nav, basePath, theme, content) {
   const pages = nav.map(p => `<a href="${basePath}/${p.slug}.html">${p.title}</a>`).join('\n      ');
+  const themeVars = Object.entries(theme.colors)
+    .map(([key, val]) => `    ${key}: ${val};`)
+    .join('\n');
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,6 +10,11 @@ function layout(config, nav, basePath, content) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>${config.title || 'gitblog'}</title>
   <meta name="description" content="${config.description || ''}">
+  <style>
+  :root {
+${themeVars}
+  }
+  </style>
   <link rel="stylesheet" href="${basePath}/style.css">
 </head>
 <body>

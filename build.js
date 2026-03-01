@@ -3,6 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const { marked } = require('marked');
 const templates = require('./templates');
+const { resolve: resolveTheme } = require('./themes');
 
 // --- Git log parsing ---
 
@@ -110,6 +111,7 @@ function build() {
   const commits = getCommits();
   const { meta, blog, embed, page } = categorize(commits);
   const config = buildConfig(meta);
+  const theme = resolveTheme(config.theme);
 
   // Merge blog + embed as posts, sorted reverse-chronological
   const allPosts = [...blog, ...embed]
@@ -136,20 +138,20 @@ function build() {
   fs.mkdirSync(postsDir, { recursive: true });
 
   // Write index
-  const indexContent = templates.layout(config, pages, basePath, templates.index(allPosts, basePath));
+  const indexContent = templates.layout(config, pages, basePath, theme, templates.index(allPosts, basePath));
   fs.writeFileSync(path.join(dist, 'index.html'), indexContent);
   console.log('  dist/index.html');
 
   // Write posts
   for (const p of allPosts) {
-    const html = templates.layout(config, pages, basePath, templates.post(p, basePath));
+    const html = templates.layout(config, pages, basePath, theme, templates.post(p, basePath));
     fs.writeFileSync(path.join(postsDir, `${p.slug}.html`), html);
     console.log(`  dist/posts/${p.slug}.html`);
   }
 
   // Write pages
   for (const p of pages) {
-    const html = templates.layout(config, pages, basePath, templates.page(p));
+    const html = templates.layout(config, pages, basePath, theme, templates.page(p));
     fs.writeFileSync(path.join(dist, `${p.slug}.html`), html);
     console.log(`  dist/${p.slug}.html`);
   }
