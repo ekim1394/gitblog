@@ -19,7 +19,7 @@ function layout(config, nav, basePath, content) {
       </nav>
     </header>
     <main>${content}</main>
-    <footer>&copy; ${new Date().getFullYear()} ${config.author || ''}. Powered by <a href="https://github.com/ekim/gitblog">gitblog</a>.</footer>
+    <footer>&copy; ${new Date().getFullYear()} ${config.author || ''}. Powered by <a href="https://github.com/ekim1394/gitblog">gitblog</a>.</footer>
   </div>
 </body>
 </html>`;
