@@ -1,15 +1,32 @@
-function layout(config, nav, basePath, theme, content) {
+function layout(config, nav, basePath, theme, content, ogMeta = {}) {
   const pages = nav.map(p => `<a href="${basePath}/${p.slug}.html">${p.title}</a>`).join('\n      ');
   const themeVars = Object.entries(theme.colors)
     .map(([key, val]) => `    ${key}: ${val};`)
     .join('\n');
+
+  const pageTitle = ogMeta.title || config.title || 'gitblog';
+  const pageDesc = ogMeta.description || config.description || '';
+  const ogType = ogMeta.type || 'website';
+  const ogImage = ogMeta.image || config.og_image || '';
+
+  let ogTags = `
+  <meta property="og:title" content="${pageTitle}">
+  <meta property="og:description" content="${pageDesc}">
+  <meta property="og:type" content="${ogType}">
+  <meta name="twitter:card" content="${ogImage ? 'summary_large_image' : 'summary'}">
+  <meta name="twitter:title" content="${pageTitle}">
+  <meta name="twitter:description" content="${pageDesc}">`;
+  if (ogMeta.url) ogTags += `\n  <meta property="og:url" content="${ogMeta.url}">`;
+  if (ogImage) ogTags += `\n  <meta property="og:image" content="${ogImage}">\n  <meta name="twitter:image" content="${ogImage}">`;
+  if (config.author) ogTags += `\n  <meta name="author" content="${config.author}">`;
+
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>${config.title || 'gitblog'}</title>
-  <meta name="description" content="${config.description || ''}">
+  <title>${pageTitle}</title>
+  <meta name="description" content="${pageDesc}">${ogTags}
   <style>
   :root {
 ${themeVars}

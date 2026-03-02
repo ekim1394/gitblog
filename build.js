@@ -138,21 +138,47 @@ function build() {
   const postsDir = path.join(dist, 'posts');
   fs.mkdirSync(postsDir, { recursive: true });
 
+  // Helper: strip HTML and truncate for OG description
+  function excerpt(html, len = 160) {
+    const text = html.replace(/<[^>]+>/g, '').trim();
+    return text.length > len ? text.slice(0, len) + '...' : text;
+  }
+
+  const siteUrl = (config.url || '').replace(/\/+$/, '');
+
   // Write index
-  const indexContent = templates.layout(config, pages, basePath, theme, templates.index(allPosts, basePath));
+  const indexOg = {
+    title: config.title || 'gitblog',
+    description: config.description || '',
+    type: 'website',
+    url: siteUrl || undefined,
+  };
+  const indexContent = templates.layout(config, pages, basePath, theme, templates.index(allPosts, basePath), indexOg);
   fs.writeFileSync(path.join(dist, 'index.html'), indexContent);
   console.log('  dist/index.html');
 
   // Write posts
   for (const p of allPosts) {
-    const html = templates.layout(config, pages, basePath, theme, templates.post(p, basePath));
+    const postOg = {
+      title: p.title,
+      description: excerpt(p.body),
+      type: 'article',
+      url: siteUrl ? `${siteUrl}/posts/${p.slug}.html` : undefined,
+    };
+    const html = templates.layout(config, pages, basePath, theme, templates.post(p, basePath), postOg);
     fs.writeFileSync(path.join(postsDir, `${p.slug}.html`), html);
     console.log(`  dist/posts/${p.slug}.html`);
   }
 
   // Write pages
   for (const p of pages) {
-    const html = templates.layout(config, pages, basePath, theme, templates.page(p));
+    const pageOg = {
+      title: p.title,
+      description: excerpt(p.body),
+      type: 'website',
+      url: siteUrl ? `${siteUrl}/${p.slug}.html` : undefined,
+    };
+    const html = templates.layout(config, pages, basePath, theme, templates.page(p), pageOg);
     fs.writeFileSync(path.join(dist, `${p.slug}.html`), html);
     console.log(`  dist/${p.slug}.html`);
   }
