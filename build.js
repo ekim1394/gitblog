@@ -70,8 +70,8 @@ function slug(title) {
 
 const EMBED_PATTERNS = [
   {
-    // YouTube: youtube.com/watch?v=ID or youtu.be/ID
-    re: /^https?:\/\/(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)([\w-]+)/,
+    // YouTube: youtube.com/watch?v=ID, youtu.be/ID, or youtube.com/shorts/ID
+    re: /^https?:\/\/(?:www\.)?(?:youtube\.com\/(?:watch\?v=|shorts\/)|youtu\.be\/)([\w-]+)/,
     render: (id) =>
       `<div class="embed-container"><iframe src="https://www.youtube.com/embed/${id}" allowfullscreen></iframe></div>`,
   },
@@ -85,7 +85,7 @@ const EMBED_PATTERNS = [
     // Twitter/X: twitter.com or x.com status URLs
     re: /^https?:\/\/(?:www\.)?(?:twitter\.com|x\.com)\/\w+\/status\/(\d+)/,
     render: (_id, url) =>
-      `<blockquote class="twitter-tweet"><a href="${url}"></a></blockquote><script async src="https://platform.twitter.com/widgets.js"></script>`,
+      `<blockquote class="twitter-tweet"><a href="${url}">View post on X</a></blockquote>`,
   },
 ];
 

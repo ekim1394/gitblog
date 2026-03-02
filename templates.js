@@ -16,6 +16,7 @@ ${themeVars}
   }
   </style>
   <link rel="stylesheet" href="${basePath}/style.css">
+  <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 </head>
 <body>
   <div class="container">
@@ -29,6 +30,7 @@ ${themeVars}
     <main>${content}</main>
     <footer>&copy; ${new Date().getFullYear()} ${config.author || ''}. Powered by <a href="https://github.com/ekim1394/gitblog">gitblog</a>.</footer>
   </div>
+  <script async src="https://platform.twitter.com/widgets.js"></script>
 </body>
 </html>`;
 }
