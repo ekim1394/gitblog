@@ -120,7 +120,7 @@ function build() {
 
   // Process each post
   for (const p of allPosts) {
-    p.slug = slug(p.title);
+    p.slug = p.hash.slice(0, 7);
     let body = p.body;
     if (p.type === 'embed') body = processEmbeds(body);
     p.body = marked(body);
