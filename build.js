@@ -190,6 +190,15 @@ function build() {
   );
   console.log('  dist/style.css');
 
+  // Emit CNAME for GitHub Pages custom domain (derived from meta: url)
+  if (siteUrl) {
+    const host = new URL(siteUrl).hostname;
+    if (host && !host.endsWith('.github.io')) {
+      fs.writeFileSync(path.join(dist, 'CNAME'), host + '\n');
+      console.log(`  dist/CNAME (${host})`);
+    }
+  }
+
   console.log(`Done. ${allPosts.length} posts, ${pages.length} pages.`);
 }
 
