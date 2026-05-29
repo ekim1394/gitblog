@@ -23,12 +23,13 @@ This skill lives in the gitblog repo at `.claude/skills/gitblog/SKILL.md` and as
 ## Branch model
 
 - **`main`** — engine code (build.js, templates, themes, workflow). No content commits.
-- **Content branch** (e.g. `ekim1394`) — engine + content commits. Only this branch deploys via [.github/workflows/deploy.yml](../../../.github/workflows/deploy.yml).
-- New posts go on the content branch. Engine fixes go on `main` and are merged into the content branch.
+- **`ekim1394`** — content branch. Engine + content commits. Only this branch deploys via [.github/workflows/deploy.yml](../../../.github/workflows/deploy.yml).
+- New posts always go on `ekim1394`, even if the current session started on a feature/dev branch. Engine fixes go on `main` and are merged into `ekim1394`.
 
-Confirm the active branch before committing content:
+Always confirm you are on `ekim1394` before committing content, and switch if not:
 ```bash
 git branch --show-current
+git checkout ekim1394 2>/dev/null || git checkout -b ekim1394 origin/ekim1394
 ```
 
 ## Workflow
@@ -102,7 +103,17 @@ Recognized keys: `title`, `author`, `description`, `theme`, `url`. Multiple `met
 
 **Push:**
 ```bash
-git push
+git push -u origin ekim1394
+```
+
+**Recovery — if you accidentally committed on the wrong branch:**
+
+`git cherry-pick` treats empty commits (no file changes) as conflicts. Use this pattern instead:
+```bash
+git checkout ekim1394
+git cherry-pick <hash>           # will exit with "empty commit" error
+git commit --allow-empty --reuse-message=<hash>
+git push -u origin ekim1394
 ```
 
 ## Topic Selection (autonomous mode)
@@ -126,7 +137,8 @@ When no topic is provided:
 | Mistake | Fix |
 |---------|-----|
 | Forgetting `--allow-empty` | Content lives in commit messages, not files. Always use `--allow-empty`. |
-| Committing on `main` | Content goes on the content branch (which deploys). `main` is engine-only. |
+| Committing on `main` or a feature branch | Content always goes on `ekim1394`. Switch there first, even if the session started on a different branch. |
+| Cherry-picking empty commits | `git cherry-pick` fails silently on empty commits. Follow it with `git commit --allow-empty --reuse-message=<hash>`. |
 | Forgetting to restore `user.name` | ALWAYS restore, even on error. Use the save/restore pattern above. |
 | Corporate tone | Match the blog's casual, reflective voice. No buzzwords. |
 | Giant posts | Keep it concise. 200-500 words. |
