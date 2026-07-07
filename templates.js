@@ -20,8 +20,9 @@ function layout(config, nav, basePath, theme, content, ogMeta = {}) {
   if (ogImage) ogTags += `\n  <meta property="og:image" content="${ogImage}">\n  <meta name="twitter:image" content="${ogImage}">`;
   if (config.author) ogTags += `\n  <meta name="author" content="${config.author}">`;
 
+  const faviconMime = config.favicon?.match(/^data:([^;,]+)[;,]/)?.[1];
   const favicon = config.favicon
-    ? `\n  <link rel="icon" href="${config.favicon}">`
+    ? `\n  <link rel="icon"${faviconMime ? ` type="${faviconMime}"` : ''} href="${config.favicon}">`
     : '';
 
   return `<!DOCTYPE html>
