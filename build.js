@@ -126,12 +126,12 @@ function build() {
     p.body = marked(body);
   }
 
-  // Process pages
-  const pages = page.map(p => ({
-    ...p,
-    slug: slug(p.title),
-    body: marked(p.body),
-  }));
+  // Process pages, keeping only the latest commit per slug (allows re-publishing a page)
+  const pagesBySlug = new Map();
+  for (const p of page) {
+    pagesBySlug.set(slug(p.title), { ...p, slug: slug(p.title), body: marked(p.body) });
+  }
+  const pages = [...pagesBySlug.values()];
 
   // Ensure output dirs
   const dist = path.join(__dirname, 'dist');
