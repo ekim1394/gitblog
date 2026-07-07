@@ -98,7 +98,7 @@ More commentary after the embed."
 ```bash
 git commit --allow-empty -m "meta: change theme" -m "theme: nord"
 ```
-Recognized keys: `title`, `author`, `description`, `theme`, `url`. Multiple `meta:` commits compose; later commits override earlier values for the same key.
+Recognized keys: `title`, `author`, `description`, `theme`, `url`, `favicon`. Multiple `meta:` commits compose; later commits override earlier values for the same key.
 
 **Push:**
 ```bash

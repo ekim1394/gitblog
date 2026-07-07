@@ -20,13 +20,17 @@ function layout(config, nav, basePath, theme, content, ogMeta = {}) {
   if (ogImage) ogTags += `\n  <meta property="og:image" content="${ogImage}">\n  <meta name="twitter:image" content="${ogImage}">`;
   if (config.author) ogTags += `\n  <meta name="author" content="${config.author}">`;
 
+  const favicon = config.favicon
+    ? `\n  <link rel="icon" href="${config.favicon}">`
+    : '';
+
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>${pageTitle}</title>
-  <meta name="description" content="${pageDesc}">${ogTags}
+  <meta name="description" content="${pageDesc}">${ogTags}${favicon}
   <style>
   :root {
 ${themeVars}

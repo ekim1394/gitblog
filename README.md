@@ -81,7 +81,8 @@ Key-value pairs in the commit body:
 ```
 git commit --allow-empty -m "meta: site config" -m "title: My Blog
 author: Jane Doe
-description: Thoughts on code"
+description: Thoughts on code
+favicon: https://example.com/icon.png"
 ```
 
 ## Setup
