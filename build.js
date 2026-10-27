@@ -10,7 +10,7 @@ const { resolve: resolveTheme } = require('./themes');
 function getCommits() {
   const sep = '---COMMIT_START---';
   const format = `${sep}%nHASH:%H%nDATE:%aI%nAUTHOR:%an%nSUBJECT:%s%nBODY_START%n%b%nBODY_END`;
-  const raw = execSync(`git log --format="${format}" --reverse`, { encoding: 'utf-8' });
+  const raw = execSync(`git log --format="${format}" --reverse`, { encoding: 'utf-8', maxBuffer: 1024 * 1024 * 256 });
 
   return raw.split(sep).filter(Boolean).map(block => {
     const hash = block.match(/HASH:(.+)/)?.[1]?.trim();
